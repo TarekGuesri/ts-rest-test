@@ -5,7 +5,7 @@ const c = initContract();
 
 const PostSchema = z.object({
   title: z.string(),
-  thumbnail: z.instanceof(File),
+  //   thumbnail: z.instanceof(File),
 });
 
 export const contract = c.router({
