@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
   ParseFilePipe,
+  Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,8 +23,7 @@ export class PostController {
   @UseInterceptors(FileInterceptor('thumbnail'))
   @TsRestHandler(c.createPost)
   async createPost(
-    @UploadedFile(new ParseFilePipe())
-    thumbnail: Express.Multer.File,
+    @UploadedFile(new ParseFilePipe()) thumbnail: Express.Multer.File,
   ) {
     return tsRestHandler(c.createPost, async ({ body }) => {
       console.log({ body, thumbnail });
@@ -33,5 +34,20 @@ export class PostController {
         },
       };
     });
+  }
+
+  @UseInterceptors(FileInterceptor('thumbnail'))
+  @Post('/posts/upload')
+  createPostVanilla(
+    @Body() body: { title: string },
+    @UploadedFile() thumbnail: Express.Multer.File,
+  ) {
+    console.log({ body, thumbnail });
+    return {
+      status: 200,
+      body: {
+        message: 'Done',
+      },
+    };
   }
 }
